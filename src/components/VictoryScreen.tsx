@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { RotateCcw, Home, Award, Sparkles } from 'lucide-react';
 import { audioManager } from '../services/AudioManager';
+import { fireGrandVictoryConfetti } from '../services/ConfettiService';
 
 interface VictoryScreenProps {
   playerName: string;
@@ -24,6 +25,7 @@ export const VictoryScreen: React.FC<VictoryScreenProps> = ({
 
   useEffect(() => {
     audioManager.playVictoryFanfare();
+    fireGrandVictoryConfetti();
 
     const canvas = canvasConfettiRef.current;
     if (!canvas) return;

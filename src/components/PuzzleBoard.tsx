@@ -4,6 +4,7 @@ import { PUZZLE_PIECES_CONFIG, generateJigsawPath } from '../services/PuzzleServ
 import { audioManager } from '../services/AudioManager';
 import { ResetConfirmModal } from './ResetConfirmModal';
 import { ActiveGamePiece } from '../types';
+import { firePiecePlacedConfetti, fireGrandVictoryConfetti } from '../services/ConfettiService';
 
 interface PuzzleBoardProps {
   imageUrl: string;
@@ -125,6 +126,10 @@ export const PuzzleBoard: React.FC<PuzzleBoardProps> = ({
     if (slotId === targetPieceId) {
       // SUCCESS: Manual placement correct!
       audioManager.playPieceSnap();
+      firePiecePlacedConfetti();
+      if (placedPieceIds.length + 1 >= 9) {
+        setTimeout(() => fireGrandVictoryConfetti(), 400);
+      }
       setJustPlacedId(targetPieceId);
       setSelectedPieceId(null);
       setWrongSlotId(null);
@@ -265,6 +270,10 @@ export const PuzzleBoard: React.FC<PuzzleBoardProps> = ({
                         if (!isNaN(droppedId)) {
                           if (droppedId === piece.id) {
                             audioManager.playPieceSnap();
+                            firePiecePlacedConfetti();
+                            if (placedPieceIds.length + 1 >= 9) {
+                              setTimeout(() => fireGrandVictoryConfetti(), 400);
+                            }
                             setJustPlacedId(piece.id);
                             setSelectedPieceId(null);
                             onPlacePieceSuccess(piece.id);
